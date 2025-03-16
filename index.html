@@ -1,0 +1,171 @@
+<!DOCTYPE html> <!-- HTML5 문서임을 선언 -->
+<html lang="ko"> <!-- 문서의 언어를 한국어로 설정 -->
+<head> <!-- 문서의 메타데이터(제목, 스타일, 스크립트 등)를 포함하는 부분 -->
+    <meta charset="UTF-8"> <!-- 문자 인코딩을 UTF-8로 설정 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 모바일 화면에서 보기 좋게 설정 -->
+    <title>나의 첫 투두리스트</title> <!-- 브라우저 탭에 표시될 제목 -->
+    <style> /* CSS 스타일 시작 */
+        body {
+            font-family: Arial, sans-serif; /* 기본 글꼴 설정 */
+            max-width: 500px; /* 최대 너비 제한 */
+            margin: 0 auto; /* 가운데 정렬 (위아래 여백 0, 좌우 자동) */
+            padding: 20px; /* 내부 여백 */
+            background-color: #f5f5f5; /* 배경색 연한 회색 */
+        }
+        
+        h1 {
+            color: #333; /* 제목 색상 */
+            text-align: center; /* 가운데 정렬 */
+        }
+        
+        .input-container {
+            display: flex; /* 내부 요소들을 가로로 배치 */
+            margin-bottom: 20px; /* 아래 여백 */
+        }
+        
+        input {
+            padding: 10px; /* 내부 여백 */
+            font-size: 16px; /* 글자 크기 */
+            flex-grow: 1; /* 남은 공간을 모두 차지하도록 설정 */
+            border: 1px solid #ddd; /* 테두리 설정 */
+            border-radius: 4px 0 0 4px; /* 왼쪽 모서리만 둥글게 (위왼, 위오른, 아래오른, 아래왼) */
+        }
+        
+        button {
+            padding: 10px 15px; /* 내부 여백 (위아래, 좌우) */
+            background-color: #4caf50; /* 배경색 녹색 */
+            color: white; /* 글자색 흰색 */
+            border: none; /* 테두리 없음 */
+            cursor: pointer; /* 마우스 올렸을 때 손가락 모양으로 변경 */
+            transition: background-color 0.3s; /* 배경색 변경 시 0.3초 동안 애니메이션 효과 */
+        }
+        
+        #addButton {
+            border-radius: 0 4px 4px 0; /* 오른쪽 모서리만 둥글게 */
+        }
+        
+        button:hover {
+            background-color: #45a049; /* 마우스 올렸을 때 버튼 색상 변경 */
+        }
+        
+        ul {
+            list-style-type: none; /* 목록 앞에 기호 제거 */
+            padding: 0; /* 내부 여백 제거 */
+            margin-top: 20px; /* 위쪽 여백 */
+        }
+        
+        li {
+            padding: 15px; /* 내부 여백 */
+            background-color: white; /* 배경색 흰색 */
+            margin-bottom: 8px; /* 아래 여백 */
+            border-radius: 4px; /* 모서리 둥글게 */
+            display: flex; /* 내부 요소들을 가로로 배치 */
+            justify-content: space-between; /* 내부 요소들 사이에 공간을 균등하게 배분 */
+            align-items: center; /* 세로 중앙 정렬 */
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* 그림자 효과 */
+        }
+        
+        li span {
+            cursor: pointer; /* 마우스 올렸을 때 손가락 모양으로 변경 */
+            flex-grow: 1; /* 남은 공간을 모두 차지하도록 설정 */
+        }
+        
+        .delete-btn {
+            background-color: #f44336; /* 삭제 버튼 배경색 빨간색 */
+            padding: 8px 12px; /* 내부 여백 */
+            border-radius: 4px; /* 모서리 둥글게 */
+            margin-left: 10px; /* 왼쪽 여백 */
+        }
+        
+        .delete-btn:hover {
+            background-color: #d32f2f; /* 마우스 올렸을 때 삭제 버튼 색상 변경 */
+        }
+        
+        .completed {
+            text-decoration: line-through; /* 취소선 */
+            color: #888; /* 완료된 항목 글자색 회색 */
+        }
+    </style> /* CSS 스타일 끝 */
+</head>
+<body> <!-- 웹 페이지의 실제 내용이 들어가는 부분 -->
+    <h1>나의 할 일 목록</h1> <!-- 페이지 제목 -->
+    
+    <!-- 할 일 입력 폼 -->
+    <div class="input-container"> <!-- 입력창과 버튼을 담는 컨테이너 -->
+        <input type="text" id="taskInput" placeholder="할 일을 입력하세요"> <!-- 할 일 입력창 -->
+        <button id="addButton">추가</button> <!-- 할 일 추가 버튼 -->
+    </div>
+    
+    <!-- 할 일 목록 -->
+    <ul id="taskList"> <!-- 할 일 항목들이 추가될 목록 -->
+        <!-- 여기에 할 일이 추가됩니다 -->
+    </ul>
+
+    <script> /* JavaScript 코드 시작 */
+        // 필요한 HTML 요소들을 변수에 저장 (DOM 요소 선택)
+        const taskInput = document.getElementById('taskInput'); // 할 일 입력창 요소
+        const addButton = document.getElementById('addButton'); // 추가 버튼 요소
+        const taskList = document.getElementById('taskList'); // 할 일 목록 요소
+        
+        // '추가' 버튼 클릭 이벤트 리스너 등록
+        addButton.addEventListener('click', function() {
+            addTask(); // 버튼 클릭 시 addTask 함수 실행
+        });
+        
+        // 입력창에서 Enter 키 입력 이벤트 리스너 등록
+        taskInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') { // 눌린 키가 Enter인 경우
+                addTask(); // addTask 함수 실행
+            }
+        });
+        
+        // 할 일 추가 함수 정의
+        function addTask() {
+            // 입력창에서 텍스트 가져오기 (앞뒤 공백 제거)
+            const taskText = taskInput.value.trim();
+            
+            // 입력값이 비어있는지 확인
+            if (taskText === '') {
+                alert('할 일을 입력해주세요!'); // 경고 메시지 표시
+                return; // 함수 종료 (더 이상 진행하지 않음)
+            }
+            
+            // 새로운 할 일 항목(li 요소) 생성
+            const li = document.createElement('li');
+            
+            // 할 일 텍스트를 담을 span 요소 생성
+            const span = document.createElement('span');
+            span.textContent = taskText; // span에 입력한 할 일 텍스트 설정
+            
+            // 삭제 버튼 요소 생성
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = '삭제'; // 버튼 텍스트 설정
+            deleteButton.className = 'delete-btn'; // 버튼에 CSS 클래스 추가
+            
+            // 삭제 버튼 클릭 이벤트 리스너 등록
+            deleteButton.addEventListener('click', function() {
+                li.remove(); // 할 일 항목(li) 삭제
+            });
+            
+            // 할 일 텍스트(span) 클릭 이벤트 리스너 등록
+            span.addEventListener('click', function() {
+                span.classList.toggle('completed'); // 'completed' 클래스 토글(추가/제거)
+                // 이것이 할 일을 완료했을 때 취소선을 표시하는 기능
+            });
+            
+            // li 요소에 span과 button 추가
+            li.appendChild(span); // li에 할 일 텍스트(span) 추가
+            li.appendChild(deleteButton); // li에 삭제 버튼 추가
+            
+            // ul(할 일 목록)에 새로운 li(할 일 항목) 추가
+            taskList.appendChild(li);
+            
+            // 입력창 초기화 (비우기)
+            taskInput.value = '';
+            
+            // 입력창에 포커스 설정 (커서 위치)
+            taskInput.focus();
+        }
+    </script> /* JavaScript 코드 끝 */
+</body>
+</html>
